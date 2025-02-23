@@ -2,8 +2,11 @@ package com.dariaert.phonebook.controller;
 
 import com.dariaert.phonebook.dto.ContactDTO;
 import com.dariaert.phonebook.service.ContactService;
+import com.dariaert.phonebook.service.CsvService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,7 @@ import java.util.List;
 public class ContactController {
 
     private final ContactService contactService;
+    private final CsvService csvService;
 
     @GetMapping
     public ResponseEntity<List<ContactDTO>> getAllContacts(){
@@ -57,6 +61,17 @@ public class ContactController {
     public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
         contactService.deleteContact(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportContactsToCsv() {
+        String csvData = csvService.exportContacts();
+        byte[] csvBytes = csvData.getBytes();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=contacts.csv")
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(csvBytes);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.dariaert.phonebook.controller;
 
 import com.dariaert.phonebook.dto.ContactDTO;
+import com.dariaert.phonebook.entity.ContactHistory;
 import com.dariaert.phonebook.service.ContactService;
 import com.dariaert.phonebook.service.CsvService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 @RestController
@@ -85,6 +85,10 @@ public class ContactController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Imported contacts successfully");
     }
 
-
+    @GetMapping("/{id}/history")
+    public ResponseEntity<List<ContactHistory>> getContactHistory(@PathVariable Long id) {
+        List<ContactHistory> history = contactService.getContactHistory(id);
+        return ResponseEntity.ok(history);
+    }
 
 }

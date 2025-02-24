@@ -1,7 +1,7 @@
 package com.dariaert.phonebook.service;
 
 import com.dariaert.phonebook.entity.Contact;
-import com.dariaert.phonebook.repository.Contactrepository;
+import com.dariaert.phonebook.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CsvService {
 
-    private final Contactrepository contactrepository;
+    private final ContactRepository contactrepository;
 
     public String exportContacts() {
         List<Contact> contacts = contactrepository.findAll();

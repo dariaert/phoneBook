@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -73,5 +74,17 @@ public class ContactController {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(csvBytes);
     }
+
+    @PostMapping("/import")
+    public ResponseEntity<String> importContactsToCsv(@RequestParam("file") MultipartFile file) {
+        if(file.isEmpty()) {
+            return ResponseEntity.badRequest().body("File is empty");
+        }
+
+        csvService.importContacts(file);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Imported contacts successfully");
+    }
+
+
 
 }
